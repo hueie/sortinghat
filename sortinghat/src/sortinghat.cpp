@@ -12,7 +12,6 @@ int main() {
     ofstream outputFile;
     outputFile.open("points.txt");
 
-
     namedWindow("clustering",1);
     cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
     const string& filename = "C:/upload/sample.mp4";

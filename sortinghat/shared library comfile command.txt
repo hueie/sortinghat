@@ -1,3 +1,9 @@
+cd C:\Users\Kait\git\opencv-java\chamberofsecrets\src
+dir
+cham~_HelloJNI.h
+hello.dll
+HelloJNI.cpp
+
 g++ -Wl,--add-stdcall-alias -I"%JAVA_HOME%\include" -I"%JAVA_HOME%\include\win32" -I"C:\OpenCV-3.2.0\opencv\mingw_build\install\include" -L"C:\OpenCV-3.2.0\opencv\mingw_build\install\x64\mingw\bin" -llibopencv_videoio320 -L"C:\OpenCV-3.2.0\opencv\mingw_build\install\x64\mingw\bin" -llibopencv_imgproc320 -L"C:\OpenCV-3.2.0\opencv\mingw_build\install\x64\mingw\bin" -llibopencv_imgcodecs320 -L"C:\OpenCV-3.2.0\opencv\mingw_build\install\x64\mingw\bin" -llibopencv_highgui320 -L"C:\OpenCV-3.2.0\opencv\mingw_build\install\x64\mingw\bin" -llibopencv_core320 -shared -o hello.dll HelloJNI.cpp
 
 /// Yeah!
