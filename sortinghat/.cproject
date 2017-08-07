@@ -44,6 +44,7 @@
 								</option>
 								<option id="gnu.cpp.link.option.libs.1377319840" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="libopencv_videoio320"/>
+									<listOptionValue builtIn="false" value="libopencv_objdetect320"/>
 									<listOptionValue builtIn="false" value="libopencv_imgproc320"/>
 									<listOptionValue builtIn="false" value="libopencv_imgcodecs320"/>
 									<listOptionValue builtIn="false" value="libopencv_highgui320"/>

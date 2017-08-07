@@ -7,7 +7,7 @@ using namespace cv;
 
 void test1();
 
-int main() {
+int main2() {
     /* File Write*/
     ofstream outputFile;
     outputFile.open("points.txt");
