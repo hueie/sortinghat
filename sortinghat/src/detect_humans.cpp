@@ -7,7 +7,7 @@
 using namespace cv;
 using namespace std;
 
-int main(int argc, char** argv) {
+int main3(int argc, char** argv) {
 	VideoCapture cap("C:/upload/sample2.mp4");
 	// CvCapture cap = cvCreateFileCapture("TownCentreXVID.avi");
 
@@ -29,6 +29,7 @@ int main(int argc, char** argv) {
 			cout << "Cannot read the frame from video file" << endl;
 			break;
 		}
+		Size frameImgSize = img.size();
 
 		cvtColor(img, img, CV_RGB2GRAY);
 		HOGDescriptor hog;
@@ -53,12 +54,22 @@ int main(int argc, char** argv) {
 		/* Filtered For What??? => To Eliminate Duplication!!!*/
 		for (i = 0; i < people.size(); i++) {
 			Rect person = people[i]; //One Person
+
+			//The detected object's Size is exceeded than Human Size;
+			if(person.width > frameImgSize.width/2){
+				break;
+			}
+			if(person.height > frameImgSize.height/2){
+				break;
+			}
+
+			//Founded the Same Position Shoud Be Escape!
 			for (j = 0; j < people.size(); j++){
 				if (j != i && (person & people[j]) == person){
-					//Founded the Same Position Shoud Be Escape!
 					break;
 				}
 			}
+
 			if (j == people.size()){
 				//If the Same Position is not Exist, We Push this to Filtered Vector!!
 				people_filtered.push_back(person);
@@ -68,10 +79,13 @@ int main(int argc, char** argv) {
 		/* Writing Dectected People into Image Frame*/
 		for (i = 0; i < people_filtered.size(); i++) {
 			Rect person_filtered = people_filtered[i];
+			cout << person_filtered.x << "," << person_filtered.y << "," << person_filtered.width << "," << person_filtered.height << endl;
+			/*
 			person_filtered.x += cvRound(person_filtered.width * 0.1);
 			person_filtered.width = cvRound(person_filtered.width * 0.8);
 			person_filtered.y += cvRound(person_filtered.height * 0.06);
 			person_filtered.height = cvRound(person_filtered.height * 0.9);
+			*/
 			rectangle(img, person_filtered.tl(), person_filtered.br(), cv::Scalar(0, 255, 0), 2);
 		}
 
