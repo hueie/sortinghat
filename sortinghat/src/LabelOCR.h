@@ -1,24 +1,15 @@
 /*
- * LabelOCR.h
- *
- *  Created on: May 1, 2014
- *      Author: chd
- */
-
 #ifndef LABELOCR_H_
 #define LABELOCR_H_
 
-#include <cv.h>
-#include <highgui.h>
-#include <cvaux.h>
-
+#include <opencv2/opencv.hpp>
 #include <iostream>
 #include <math.h>
 #include <string.h>
 #include <sstream>
 
 #include <tesseract/baseapi.h>
-#include <tesseract/strngs.h>
+#include <strngs.h>
 
 using namespace cv;
 using namespace std;
@@ -42,4 +33,6 @@ private:
 
 };
 
-#endif /* LABELOCR_H_ */
+#endif
+*/
+/* LABELOCR_H_ */

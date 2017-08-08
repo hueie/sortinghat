@@ -1,7 +1,9 @@
-
+/*
 #include <opencv2/opencv.hpp>
 #include <opencv2/ml/ml.hpp>
 #include <iostream>
+#include <vector>
+#include <sstream>
 #include <math.h>
 #include <string.h>
 #include <time.h>
@@ -14,8 +16,155 @@ using namespace cv::ml;
 using namespace std;
 
 
+
+string pathLabels1 = "C:/Users/Kait/git/sortinghat/sortinghat/ml/LabelDataset/label1_";
+string pathLabels2 = "C:/Users/Kait/git/sortinghat/sortinghat/ml/LabelDataset/label2_";
+string path_NoLabels = "C:/Users/Kait/git/sortinghat/sortinghat/ml/LabelDataset/noLabel_";
+string result_xml_filepath = "C:/Users/Kait/git/sortinghat/sortinghat/ml/SVM.xml";
+int numLabel1=100;
+int numLabel2=100;
+int numNoLabels=200;
+int imageWidth=400;
+int imageHeight=200;
+
+void generateLabelDataset(VideoCapture cap, int numData, int nClass){
+	DetectLabel detectLabels;
+	detectLabels.showBasicImages = true;
+	vector<Mat> label;
+	Mat normalImage;
+	string path_data;
+	int i = 0;
+
+
+	if (nClass == 1){
+	    path_data = pathLabels1;
+		numLabel1 = numData;
+	} else if (nClass == 2){
+		path_data = pathLabels2;
+		numLabel2 = numData;
+	} else{
+		path_data = path_NoLabels;
+		numNoLabels = numData;
+	}
+
+	while (i < numData) {
+		cap >> normalImage;
+		detectLabels.segment(normalImage, label);
+		// TODO: RGB to gray
+		if (label.size() > 0){
+			if (!label[0].empty()){
+				stringstream ss;
+				ss << path_data << i << ".jpg";
+				imwrite(ss.str(), label[0]);
+				cout << "path = "<< ss.str() << endl;
+				//cout <<  label[0].cols << endl;
+				i++;
+			}
+		}
+		namedWindow("normalImage",WINDOW_NORMAL);
+		imshow("normalImage",normalImage);
+		label.clear();
+		if(waitKey(30) >= 0) break;
+	}
+}
+
+void labelToXml(){
+    Mat classes;//(numLabel1+numLabel2+numNoLabels, 1, CV_32FC1);
+    Mat trainingData;//(numLabel+numNoLabels, imageWidth*imageHeight, CV_32FC1 );
+
+    Mat trainingImages;
+    vector<int> trainingLabels;
+
+    cout << numLabel1 << endl;
+    cout << path_NoLabels << endl;
+
+    for(int i=0; i< numLabel1; i++)
+    {
+        stringstream ss(stringstream::in | stringstream::out);
+        ss << pathLabels1 << i << ".jpg";
+        cout << "read path = "<< ss.str() << endl;
+        Mat img=imread(ss.str(), 0);
+        img= img.reshape(1, 1);
+        trainingImages.push_back(img);
+        trainingLabels.push_back(1);
+    }
+
+    for(int i=0; i< numLabel2; i++)
+    {
+        stringstream ss(stringstream::in | stringstream::out);
+        ss << pathLabels2 << i << ".jpg";
+        cout << "read path 2= "<< ss.str() << endl;
+        Mat img=imread(ss.str(), 0);
+        img= img.reshape(1, 1);
+        trainingImages.push_back(img);
+        trainingLabels.push_back(2);
+    }
+
+    for(int i=0; i< numNoLabels; i++)
+    {
+        stringstream ss(stringstream::in | stringstream::out);
+        ss << path_NoLabels << i << ".jpg";
+        cout << "read path 3= "<< ss.str() << endl;
+        Mat img=imread(ss.str(), 0);
+        if (img.empty()) break;
+        img= img.reshape(1, 1);
+        trainingImages.push_back(img);
+        trainingLabels.push_back(0);
+
+    }
+
+    Mat(trainingImages).copyTo(trainingData);
+    //trainingData = trainingData.reshape(1,trainingData.rows);
+    trainingData.convertTo(trainingData, CV_32FC1);
+    Mat(trainingLabels).copyTo(classes);
+
+    FileStorage fs(result_xml_filepath, FileStorage::WRITE);
+    fs << "TrainingData" << trainingData;
+    fs << "classes" << classes;
+    fs.release();
+}
+
+void generateDatasetModule(){
+	VideoCapture cap(1); // open the default camera
+	    if(!cap.isOpened()){  // check if we succeeded
+	        return;
+	    }
+	    int opcion;
+	    cout << "OpenCV Training SVM " << endl;
+
+		while(true){
+			cout << "1) Generate Label 1 Sample From Camera. " << endl;
+			cout << "2) Generate Label 2 Sample From Camera. " << endl;
+			cout << "3) Generate None Label Sample From Camera. " << endl;
+			cout << "4) Generate XML File. " << endl;
+			cin >> opcion;
+			switch (opcion){
+				case 1:
+					generateLabelDataset(cap, numLabel1, 1);
+					break;
+				case 2:
+					generateLabelDataset(cap, numLabel2, 2);
+					break;
+				case 3:
+					generateLabelDataset(cap, numNoLabels, 0);
+					break;
+				case 4:
+					labelToXml();
+					break;
+				default:
+					break;
+			}
+		}
+}
+
 int main( int argc, char** argv )
 {
+
+
+	generateDatasetModule();
+
+
+	//
     VideoCapture cap(0); // open the default camera
     if(!cap.isOpened())  // check if we succeeded
         return (-1);
@@ -65,7 +214,6 @@ int main( int argc, char** argv )
 	cout << "Time: " << timer << endl;
 
 	while(true){
-
 		cap >> normalImage; // get a new frame from camera
 		imshow("normal", normalImage);
 
@@ -101,11 +249,8 @@ int main( int argc, char** argv )
 		if ( label_2.size() > 0) {
 			labelText2 = labelOcr.runRecognition(label_2,2);
 		}
-
-
 		if(waitKey(30) >= 0) break;
 	}
-
-
 	return (0);
 }
+*/

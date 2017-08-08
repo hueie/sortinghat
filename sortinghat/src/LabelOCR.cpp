@@ -1,10 +1,4 @@
 /*
- * LabelOCR.cpp
- *
- *  Created on: May 1, 2014
- *      Author: chd
- */
-
 #include "LabelOCR.h"
 
 LabelOCR::LabelOCR() {
@@ -156,3 +150,4 @@ vector<string> LabelOCR::runRecognition(const vector<Mat> &labelImage, int label
     }
     return (output);
 }
+*/

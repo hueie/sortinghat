@@ -1,17 +1,8 @@
 /*
- * DetectLabel.h
- *
- *  Created on: May 1, 2014
- *      Author: chd
- */
-
 #ifndef DETECTLABEL_H_
 #define DETECTLABEL_H_
 
-#include <cv.h>
-#include <highgui.h>
-#include <cvaux.h>
-
+#include <opencv2/opencv.hpp>
 #include <iostream>
 #include <math.h>
 #include <string.h>
@@ -64,4 +55,5 @@ private:
 
 };
 
-#endif /* DETECTLABEL_H_ */
+#endif
+*/

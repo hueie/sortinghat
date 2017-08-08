@@ -1,10 +1,4 @@
 /*
- * DetectLabel.cpp
- *
- *  Created on: May 1, 2014
- *      Author: chd
- */
-
 #include "DetectLabel.h"
 
 DetectLabel::DetectLabel() {
@@ -315,3 +309,4 @@ void DetectLabel::segment(const Mat &InputImage, vector<Mat> &outputImage){
     }
 
 }
+*/

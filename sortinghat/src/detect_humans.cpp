@@ -7,7 +7,7 @@
 using namespace cv;
 using namespace std;
 
-int main3(int argc, char** argv) {
+int main(int argc, char** argv) {
 	VideoCapture cap("C:/upload/sample2.mp4");
 	// CvCapture cap = cvCreateFileCapture("TownCentreXVID.avi");
 
@@ -21,6 +21,7 @@ int main3(int argc, char** argv) {
 
 	namedWindow("MyVideo", CV_WINDOW_AUTOSIZE); //create a window called "MyVideo"
 
+	int frame_idx = 0;
 	while (1) {
 		Mat img;
 		bool bSuccess = cap.read(img); // read a new frame from video
@@ -35,7 +36,9 @@ int main3(int argc, char** argv) {
 		HOGDescriptor hog;
 		hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
 		vector<Rect> people, people_filtered; //Vector == Array
-		hog.detectMultiScale(img, people, 0, Size(8, 8), Size(128, 128));
+		hog.detectMultiScale(img, people, 0, Size(4, 4), Size(32, 32), 1.05);
+		//Change Padding!!!
+
 		/*
 		http://docs.opencv.org/3.2.0/d5/d33/structcv_1_1HOGDescriptor.html
 
@@ -50,8 +53,7 @@ int main3(int argc, char** argv) {
 
 		 */
 		size_t i, j;
-
-		/* Filtered For What??? => To Eliminate Duplication!!!*/
+		/* Filtered For non Maxima Suppression => To Eliminate Duplication!!!*/
 		for (i = 0; i < people.size(); i++) {
 			Rect person = people[i]; //One Person
 
@@ -63,7 +65,7 @@ int main3(int argc, char** argv) {
 				break;
 			}
 
-			//Founded the Same Position Shoud Be Escape!
+			//non Maxima Suppression Founded the Same Position Shoud Be Escape!
 			for (j = 0; j < people.size(); j++){
 				if (j != i && (person & people[j]) == person){
 					break;
@@ -76,10 +78,11 @@ int main3(int argc, char** argv) {
 			}
 		}
 
+
 		/* Writing Dectected People into Image Frame*/
 		for (i = 0; i < people_filtered.size(); i++) {
 			Rect person_filtered = people_filtered[i];
-			cout << person_filtered.x << "," << person_filtered.y << "," << person_filtered.width << "," << person_filtered.height << endl;
+			cout << frame_idx<<","<< i <<":" << person_filtered.x << "," << person_filtered.y << "," << person_filtered.width << "," << person_filtered.height << endl;
 			/*
 			person_filtered.x += cvRound(person_filtered.width * 0.1);
 			person_filtered.width = cvRound(person_filtered.width * 0.8);
@@ -88,6 +91,10 @@ int main3(int argc, char** argv) {
 			*/
 			rectangle(img, person_filtered.tl(), person_filtered.br(), cv::Scalar(0, 255, 0), 2);
 		}
+		if(i != 0){
+			cout << endl;
+		}
+		frame_idx++;
 
 		imshow("MyVideo", img); //show the frame in "MyVideo" window
 		if (waitKey(30) == 27) {
